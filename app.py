@@ -49,3 +49,10 @@ def table_content(table_name=None):
 
 if __name__ == "__main__":
     app.run(host=FLASK_IP, port=FLASK_PORT, debug=FLASK_DEBUG)
+
+#Function to show image (Danny) 
+def ShowImage():    
+ app = Flask(__name__, static_url_path='/static')
+ return app
+
+ShowImage()
