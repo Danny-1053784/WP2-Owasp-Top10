@@ -1,7 +1,7 @@
 import os.path
 import sys
 
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect , request,  url_for, abort
 
 from lib.tablemodel import DatabaseModel
 from lib.demodatabase import create_demo_database
@@ -28,13 +28,19 @@ dbm = DatabaseModel(DATABASE_FILE)
 # It is a way to "decorate" a function with additional functionality. You
 # can safely ignore this for now - or look into it as it is a really powerful
 # concept in Python.
+
 @app.route("/")
 def index():
+    return render_template("index.html")
+
+
+#redirect to tables page (Danny)
+@app.route("/")
+def showTables():
     tables = dbm.get_table_list()
     return render_template(
         "tables.html", table_list=tables, database_file=DATABASE_FILE
     )
-
 
 # The table route displays the content of a table
 @app.route("/table_details/<table_name>")
@@ -46,6 +52,18 @@ def table_content(table_name=None):
         return render_template(
             "table_details.html", rows=rows, columns=column_names, table_name=table_name
         )
+
+
+#redirect for form login to tables page (when post is send go to showtables function )(Danny)
+@app.route('/succesLogin', methods=['GET', 'POST'])
+def succesLogin():
+    if request.method == 'POST':
+        return showTables()
+    elif request.method == 'GET':
+        return redirect('/')
+    else:
+        return 'Not a valid request method for this route'
+
 
 if __name__ == "__main__":
     app.run(host=FLASK_IP, port=FLASK_PORT, debug=FLASK_DEBUG)
