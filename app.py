@@ -30,10 +30,8 @@ dbm = DatabaseModel(DATABASE_FILE)
 # concept in Python.
 @app.route("/")
 def index():
-    tables = dbm.get_table_list()
     return render_template(
-        "tables.html", table_list=tables, database_file=DATABASE_FILE
-    )
+        "index.html")
 
 
 # The table route displays the content of a table
