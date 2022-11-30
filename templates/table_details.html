@@ -11,7 +11,12 @@
 
 </head>
 <style>
-
+.text-white {
+    --bs-text-opacity: 1 !important;
+    color: #041f74 !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+}
 th {
     
     background-color: white;
@@ -19,6 +24,10 @@ th {
 }
 tr {
     border: solid black 1px;
+}
+[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
+    cursor: pointer;
+    color: #041f74 !important;
 }
 </style>
 <body>
