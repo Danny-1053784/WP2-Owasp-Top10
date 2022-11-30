@@ -53,6 +53,11 @@ def table_content(table_name=None):
             "table_details.html", rows=rows, columns=column_names, table_name=table_name
         )
 
+@app.route("/bad_questions")
+def bad_questions():
+    rows, column_names = dbm.get_bad_questions()
+    return render_template(
+        "table_details.html", rows=rows, columns=column_names, table_name="")
 
 #redirect for form login to tables page (when post is send go to showtables function )(Danny)
 @app.route('/succesLogin', methods=['GET', 'POST'])
