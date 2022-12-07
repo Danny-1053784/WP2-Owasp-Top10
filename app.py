@@ -1,4 +1,5 @@
 import os.path
+
 import sys
 
 from flask import Flask, render_template, redirect , request,  url_for, abort
@@ -53,11 +54,28 @@ def table_content(table_name=None):
             "table_details.html", rows=rows, columns=column_names, table_name=table_name
         )
 
+#The table with filtered questions (Bryan)
 @app.route("/bad_questions")
 def bad_questions():
     rows, column_names = dbm.get_bad_questions()
     return render_template(
         "table_details.html", rows=rows, columns=column_names, table_name="")
+
+
+#edit table (Bryan)
+@app.route("/update/<vraag_id>", methods=['GET', 'POST'])
+def update(vraag_id):
+    if request.method == 'GET':
+        vraag = dbm.read_question(vraag_id)
+        return render_template(
+            "question_details.html" , vraag_id=vraag_id, vraag=vraag 
+        )
+        # haal vraag info op en toon vraag detail pagina
+    elif request.method == "POST":
+        my_data.vraag = request.form['vraag']
+        my_data = Data.query.get(vraag_id) 
+        db.session.commit()
+
 
 #redirect for form login to tables page (when post is send go to showtables function )(Danny)
 @app.route('/succesLogin', methods=['GET', 'POST'])
