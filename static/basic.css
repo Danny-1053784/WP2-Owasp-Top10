@@ -44,7 +44,7 @@ body {
 }
 img, iframe {border: none; max-width: 100%}
 
-a {color: var(--c1);  text-decoration:none}
+a {color: var(--c1);  text-decoration:none !important}
 
 a:hover {color: var(--c1); text-decoration: underline}
 
