@@ -1,7 +1,7 @@
 import os.path
 import sys
 
-from flask import Flask, render_template, redirect , request,  url_for, abort
+from flask import Flask, render_template, redirect , request, session ,url_for, abort
 
 from lib.tablemodel import DatabaseModel
 from lib.demodatabase import create_demo_database
@@ -14,6 +14,7 @@ FLASK_PORT = 81
 FLASK_DEBUG = True
 
 app = Flask(__name__)
+app.secret_key = "ImNotABigFanOfFlask69"
 # This command creates the "<application directory>/databases/testcorrect_vragen.db" path
 DATABASE_FILE = os.path.join(app.root_path, 'databases', 'testcorrect_vragen.db')
 
@@ -63,15 +64,24 @@ def table_content(table_name=None):
         )
 
 
-#redirect for form login to tables page (when post is send go to showtables function )(Danny)
-@app.route('/succesLogin', methods=['GET', 'POST'])
-def succesLogin():
+@app.route('/login', methods=["POST", "GET"])
+def login():
     if request.method == 'POST':
-        return showTables()
-    elif request.method == 'GET':
-        return redirect('/')
-    else:
-        return 'Not a valid request method for this route'
+        username = request.form['username']
+        password = request.form['password']
+        print(dbm.user_login(username, password))
+        if dbm.user_login(username, password):
+            session['username'] = username
+            tables = dbm.get_table_list()
+            return render_template(
+            "tables.html", table_list=tables, database_file=DATABASE_FILE)
+        else:
+            return redirect(url_for('index'))
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
 
 
 if __name__ == "__main__":
