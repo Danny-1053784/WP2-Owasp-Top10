@@ -3,7 +3,6 @@ import os.path
 import sys
 
 from flask import Flask, render_template, redirect , request,  url_for, abort
-
 from lib.tablemodel import DatabaseModel
 from lib.demodatabase import create_demo_database
 
@@ -72,10 +71,9 @@ def update(vraag_id):
         )
         # haal vraag info op en toon vraag detail pagina
     elif request.method == "POST":
-        my_data.vraag = request.form['vraag']
-        my_data = Data.query.get(vraag_id) 
-        db.session.add(vraag)
-        db.session.commit()
+        vraag = request.form['vraag']
+        dbm.save_question(vraag, vraag_id)
+        return redirect(f'/bad_questions')
 
 
 #redirect for form login to tables page (when post is send go to showtables function )(Danny)

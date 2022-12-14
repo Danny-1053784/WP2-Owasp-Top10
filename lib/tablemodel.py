@@ -49,4 +49,9 @@ class DatabaseModel:
        
         return table_content
 
-
+    def save_question(self, vraag, id):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE vragen SET vraag = '{vraag}' WHERE id = {id}")
+        conn.commit()
+        return True
