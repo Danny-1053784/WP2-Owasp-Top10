@@ -45,6 +45,7 @@ def getListTables():
     )
 
 
+
 #redirect to tables page (Danny)
 @app.route("/")
 def showTables():
@@ -106,6 +107,13 @@ def login():
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
+
+@app.route('/logoRedirect')
+def logoRedirect():
+    tables = dbm.get_table_list()
+    return render_template(
+    "tables.html", table_list=tables, database_file=DATABASE_FILE)
 
 
 if __name__ == "__main__":
