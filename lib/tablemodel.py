@@ -57,16 +57,5 @@ class DatabaseModel:
         conn.commit()
         return True
 
-    # Login function (Danny)  
-    def user_login(self,username, password):
-            con = sqlite3.connect(self.database_file)
-            cur = con.cursor()
-            cur.execute('Select username,password FROM user WHERE username=? and password=?', (username, password))
-            
-            result = cur.fetchone()
-            if result:
-            # checks to see if user exists in db (shows in terminal)
-                return True
-            else:
-                return False
+   
 

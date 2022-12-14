@@ -6,6 +6,7 @@ from flask import Flask, render_template, redirect , request, session ,url_for, 
 
 
 from lib.tablemodel import DatabaseModel
+from lib.loginmodel import UserDatabaseModel
 from lib.demodatabase import create_demo_database
 
 # This demo glues a random database and the Flask framework. If the database file does not exist,
@@ -19,12 +20,13 @@ app = Flask(__name__)
 app.secret_key = "ImNotABigFanOfFlask69"
 # This command creates the "<application directory>/databases/testcorrect_vragen.db" path
 DATABASE_FILE = os.path.join(app.root_path, 'databases', 'testcorrect_vragen.db')
-
+USER_DATABASE_FILE = os.path.join(app.root_path, 'databases', 'user_details.db')
 # Check if the database file exists. If not, create a demo database
 if not os.path.isfile(DATABASE_FILE):
     print(f"Could not find database {DATABASE_FILE}, creating a demo database.")
     create_demo_database(DATABASE_FILE)
 dbm = DatabaseModel(DATABASE_FILE)
+dbu = UserDatabaseModel(USER_DATABASE_FILE)
 
 # Main route that shows a list of tables in the database
 # Note the "@app.route" decorator. This might be a new concept for you.
@@ -94,8 +96,8 @@ def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        print(dbm.user_login(username, password))
-        if dbm.user_login(username, password):
+        print(dbu.user_login(username, password))
+        if dbu.user_login(username, password):
             session['username'] = username
             tables = dbm.get_table_list()
             return render_template(
