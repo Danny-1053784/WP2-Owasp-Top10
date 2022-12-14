@@ -20,3 +20,6 @@ Om de demo applicatie te starten:
 .\venv\sripts\activate
 python app.py
 ```
+# Sources
+https://getbootstrap.com/
+https://getbootstrap.com/docs/5.2/examples/
