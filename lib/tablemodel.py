@@ -29,6 +29,7 @@ class DatabaseModel:
         # Note that this method returns 2 variables!
         return table_content, table_headers
 
+
     def get_bad_questions(self):
         cursor = sqlite3.connect(self.database_file).cursor()
         cursor.execute("SELECT * FROM vragen WHERE vraag LIKE '%<br>%' OR vraag LIKE '%&nbsp%'")
@@ -55,3 +56,17 @@ class DatabaseModel:
         cursor.execute(f"UPDATE vragen SET vraag = '{vraag}' WHERE id = {id}")
         conn.commit()
         return True
+
+    # Login function (Danny)  
+    def user_login(self,username, password):
+            con = sqlite3.connect(self.database_file)
+            cur = con.cursor()
+            cur.execute('Select username,password FROM user WHERE username=? and password=?', (username, password))
+
+            result = cur.fetchone()
+            if result:
+            # checks to see if user exists in db (shows in terminal)
+                return True
+            else:
+                return False
+

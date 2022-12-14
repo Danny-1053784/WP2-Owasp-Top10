@@ -39,29 +39,8 @@ tr {
 </style>
 <body>
     
-  <header class="p-3 text-bg-dark">
-    <div class="container">
-      <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <a class="navbar-brand" href="#">
-          <!-- uses ShowImage function from app.py (Danny) -->
-            <img src="/static/images/testcorrect-logo.svg"  alt="Logo" width="" height="">
-          </a>
-        <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Features</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">About</a></li>
-        </ul>
+{% include 'header.html' %}
 
-
-        <div class="text-end">
-          <button type="button" class="btn btn-outline-light me-2">Uitloggen</button>
-          
-        </div>
-      </div>
-    </div>
-  </header>
 <main>
     <h1>Database onderzoek</h1>
     <p>Alle rijen in de tabel <b>{{ table_name }}</b>:</p>

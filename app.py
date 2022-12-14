@@ -2,7 +2,9 @@ import os.path
 
 import sys
 
-from flask import Flask, render_template, redirect , request,  url_for, abort
+from flask import Flask, render_template, redirect , request, session ,url_for, abort
+
+
 from lib.tablemodel import DatabaseModel
 from lib.demodatabase import create_demo_database
 
@@ -14,6 +16,7 @@ FLASK_PORT = 81
 FLASK_DEBUG = True
 
 app = Flask(__name__)
+app.secret_key = "ImNotABigFanOfFlask69"
 # This command creates the "<application directory>/databases/testcorrect_vragen.db" path
 DATABASE_FILE = os.path.join(app.root_path, 'databases', 'testcorrect_vragen.db')
 
@@ -34,6 +37,14 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/")
+def getListTables():
+    tables = dbm.get_table_list()
+    return render_template(
+        "tables.html", table_list=tables, database_file=DATABASE_FILE
+    )
+
+
 #redirect to tables page (Danny)
 @app.route("/")
 def showTables():
@@ -48,9 +59,10 @@ def table_content(table_name=None):
     if not table_name:
         return "Missing table name", 400  # HTTP 400 = Bad Request
     else:
+        tables = dbm.get_table_list()
         rows, column_names = dbm.get_table_content(table_name)
         return render_template(
-            "table_details.html", rows=rows, columns=column_names, table_name=table_name
+            "table_details.html", rows=rows, columns=column_names, table_name=table_name, table_list=tables
         )
 
 #The table with filtered questions (Bryan)
@@ -76,15 +88,24 @@ def update(vraag_id):
         return redirect(f'/bad_questions')
 
 
-#redirect for form login to tables page (when post is send go to showtables function )(Danny)
-@app.route('/succesLogin', methods=['GET', 'POST'])
-def succesLogin():
+@app.route('/login', methods=["POST", "GET"])
+def login():
     if request.method == 'POST':
-        return showTables()
-    elif request.method == 'GET':
-        return redirect('/')
-    else:
-        return 'Not a valid request method for this route'
+        username = request.form['username']
+        password = request.form['password']
+        print(dbm.user_login(username, password))
+        if dbm.user_login(username, password):
+            session['username'] = username
+            tables = dbm.get_table_list()
+            return render_template(
+            "tables.html", table_list=tables, database_file=DATABASE_FILE)
+        else:
+            return redirect(url_for('index'))
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
 
 
 if __name__ == "__main__":
