@@ -25,5 +25,5 @@ python app.py
 - Wachtwoord: admin
 
 # Bronnen
-https://getbootstrap.com/
-https://getbootstrap.com/docs/5.2/examples/
+- https://getbootstrap.com/
+- https://getbootstrap.com/docs/5.2/examples/
