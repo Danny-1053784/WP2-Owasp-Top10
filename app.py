@@ -1,7 +1,9 @@
 import os.path
+
 import sys
 
 from flask import Flask, render_template, redirect , request, session ,url_for, abort
+
 
 from lib.tablemodel import DatabaseModel
 from lib.demodatabase import create_demo_database
@@ -62,6 +64,28 @@ def table_content(table_name=None):
         return render_template(
             "table_details.html", rows=rows, columns=column_names, table_name=table_name, table_list=tables
         )
+
+#The table with filtered questions (Bryan)
+@app.route("/bad_questions")
+def bad_questions():
+    rows, column_names = dbm.get_bad_questions()
+    return render_template(
+        "table_details.html", rows=rows, columns=column_names, table_name="")
+
+
+#edit table (Bryan)
+@app.route("/update/<vraag_id>", methods=['GET', 'POST'])
+def update(vraag_id):
+    if request.method == 'GET':
+        vraag = dbm.read_question(vraag_id)
+        return render_template(
+            "question_details.html" , vraag_id=vraag_id, vraag=vraag 
+        )
+        # haal vraag info op en toon vraag detail pagina
+    elif request.method == "POST":
+        vraag = request.form['vraag']
+        dbm.save_question(vraag, vraag_id)
+        return redirect(f'/bad_questions')
 
 
 @app.route('/login', methods=["POST", "GET"])

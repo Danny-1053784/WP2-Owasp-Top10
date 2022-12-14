@@ -29,6 +29,34 @@ class DatabaseModel:
         # Note that this method returns 2 variables!
         return table_content, table_headers
 
+
+    def get_bad_questions(self):
+        cursor = sqlite3.connect(self.database_file).cursor()
+        cursor.execute("SELECT * FROM vragen WHERE vraag LIKE '%<br>%' OR vraag LIKE '%&nbsp%'")
+        # An alternative for this 2 var approach is to set a sqlite row_factory on the connection
+        table_headers = [column_name[0] for column_name in cursor.description]
+        table_content = cursor.fetchall()
+
+        # Note that this method returns 2 variables!
+        return table_content, table_headers
+
+    def read_question(self, id):
+        cursor = sqlite3.connect(self.database_file).cursor()
+        cursor.execute("SELECT vraag FROM vragen WHERE id="+id)
+       
+        
+        table_content = cursor.fetchone()[0]
+
+       
+        return table_content
+
+    def save_question(self, vraag, id):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE vragen SET vraag = '{vraag}' WHERE id = {id}")
+        conn.commit()
+        return True
+
     # Login function (Danny)  
     def user_login(self,username, password):
             con = sqlite3.connect(self.database_file)
@@ -41,3 +69,4 @@ class DatabaseModel:
                 return True
             else:
                 return False
+

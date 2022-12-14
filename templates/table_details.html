@@ -44,6 +44,7 @@ tr {
 <main>
     <h1>Database onderzoek</h1>
     <p>Alle rijen in de tabel <b>{{ table_name }}</b>:</p>
+    <form action="/bad_questions"><button>filtered html button</button></form>
     <table>
         <thead>
         <tr>
@@ -58,6 +59,9 @@ tr {
             {% for field in row %}
             <td>{{ field }}</td>
             {% endfor %}
+            <td>
+              <a href="/update/{{row[0]}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="modaledit{{row[0]}}">Edit</a>
+            </td>
         </tr>
         {% endfor %}
         </tbody>
