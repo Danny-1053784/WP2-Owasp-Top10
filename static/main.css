@@ -1,0 +1,17 @@
+.text-secondary {
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-secondary-rgb),var(--bs-text-opacity))!important;
+    color: #041f74 !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+}
+.text-white {
+    --bs-text-opacity: 1 !important;
+    color: #041f74 !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+}
+[type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled), button:not(:disabled) {
+    cursor: pointer;
+    color: #041f74 !important;
+}
