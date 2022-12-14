@@ -78,16 +78,6 @@ def login():
             return redirect(url_for('index'))
 
 
-#redirect for form login to tables page (when post is send go to showtables function )(Danny)
-@app.route('/succesLogin', methods=['GET', 'POST'])
-def succesLogin():
-    if request.method == 'POST':
-        return showTables()
-    elif request.method == 'GET':
-        return redirect('/')
-    else:
-        return 'Not a valid request method for this route'
-
 
 if __name__ == "__main__":
     app.run(host=FLASK_IP, port=FLASK_PORT, debug=FLASK_DEBUG)
