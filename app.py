@@ -78,6 +78,10 @@ def login():
         else:
             return redirect(url_for('index'))
 
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
 
 
 if __name__ == "__main__":
