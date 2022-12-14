@@ -74,6 +74,7 @@ def update(vraag_id):
     elif request.method == "POST":
         my_data.vraag = request.form['vraag']
         my_data = Data.query.get(vraag_id) 
+        db.session.add(vraag)
         db.session.commit()
 
 

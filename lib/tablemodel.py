@@ -42,11 +42,11 @@ class DatabaseModel:
     def read_question(self, id):
         cursor = sqlite3.connect(self.database_file).cursor()
         cursor.execute("SELECT vraag FROM vragen WHERE id="+id)
-        # An alternative for this 2 var approach is to set a sqlite row_factory on the connection
+       
         
         table_content = cursor.fetchone()[0]
 
-        # Note that this method returns 2 variables!
+       
         return table_content
 
 
