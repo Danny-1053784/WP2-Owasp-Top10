@@ -1,7 +1,7 @@
 import os.path
 import sys
 
-from flask import Flask, render_template, redirect , request,  url_for, abort
+from flask import Flask, render_template, redirect , request, session ,url_for, abort
 
 from lib.tablemodel import DatabaseModel
 from lib.demodatabase import create_demo_database
@@ -61,6 +61,21 @@ def table_content(table_name=None):
         return render_template(
             "table_details.html", rows=rows, columns=column_names, table_name=table_name, table_list=tables
         )
+
+
+@app.route('/login', methods=["POST", "GET"])
+def login():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        print(dbm.user_login(username, password))
+        if dbm.user_login(username, password):
+            session['username'] = username
+            tables = dbm.get_table_list()
+            return render_template(
+            "tables.html", table_list=tables, database_file=DATABASE_FILE)
+        else:
+            return redirect(url_for('index'))
 
 
 #redirect for form login to tables page (when post is send go to showtables function )(Danny)
