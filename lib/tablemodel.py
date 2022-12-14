@@ -62,7 +62,7 @@ class DatabaseModel:
             con = sqlite3.connect(self.database_file)
             cur = con.cursor()
             cur.execute('Select username,password FROM user WHERE username=? and password=?', (username, password))
-
+            
             result = cur.fetchone()
             if result:
             # checks to see if user exists in db (shows in terminal)
