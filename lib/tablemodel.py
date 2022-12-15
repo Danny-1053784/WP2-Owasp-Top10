@@ -21,7 +21,7 @@ class DatabaseModel:
     # Given a table name, return the rows and column names
     def get_table_content(self, table_name):
         cursor = sqlite3.connect(self.database_file).cursor()
-        cursor.execute(f"SELECT * FROM {table_name}")
+        cursor.execute(f"SELECT * FROM {table_name} ")
         # An alternative for this 2 var approach is to set a sqlite row_factory on the connection
         table_headers = [column_name[0] for column_name in cursor.description]
         table_content = cursor.fetchall()
@@ -57,16 +57,30 @@ class DatabaseModel:
         conn.commit()
         return True
 
-    # Login function (Danny)  
-    def user_login(self,username, password):
-            con = sqlite3.connect(self.database_file)
-            cur = con.cursor()
-            cur.execute('Select username,password FROM user WHERE username=? and password=?', (username, password))
-            
-            result = cur.fetchone()
-            if result:
-            # checks to see if user exists in db (shows in terminal)
-                return True
-            else:
-                return False
+   
+    def get_invalid_objective(self):
+            cursor = sqlite3.connect(self.database_file).cursor()
+            cursor.execute("SELECT * FROM vragen WHERE leerdoel NOT IN (SELECT id FROM leerdoelen)")
+            # An alternative for this 2 var approach is to set a sqlite row_factory on the connection
+            table_headers = [column_name[0] for column_name in cursor.description]
+            table_content = cursor.fetchall()
 
+            # Note that this method returns 2 variables!
+            return table_content, table_headers
+
+    def read_invalid_objective(self, id):
+            cursor = sqlite3.connect(self.database_file).cursor()
+            cursor.execute("SELECT leerdoel FROM vragen WHERE id="+id)
+        
+            
+            table_content = cursor.fetchone()[0]
+
+        
+            return table_content
+
+    def update_invalid_objective(self, leerdoel, id):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE vragen SET leerdoel = '{leerdoel}' WHERE id = {id}")
+        conn.commit()
+        return True
