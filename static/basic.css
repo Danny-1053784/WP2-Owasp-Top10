@@ -134,6 +134,11 @@ header.p-3.text-bg-dark {
     width: 100% !important;
     z-index: 999 !important;
 }
+
+.update{
+    margin-left: 1%;
+}
+
 .nav.col-12.col-lg-auto.me-lg-auto.mb-2.justify-content-center.mb-md-0 li {
     margin-left: 20px;
     margin-top: 7px;
@@ -143,3 +148,4 @@ header.p-3.text-bg-dark {
     font-weight: 700 !important;
     text-decoration: none !important;
 }
+
