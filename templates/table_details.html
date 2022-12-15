@@ -25,8 +25,10 @@
         <form action="/bad_questions"><button>ongeldige vragen</button></form>
     {% endif %}
 
+    {% if table_name in ["leerdoelen"] %}
     <br>
     <form action="/invalid_objective"><button>ongeldig leerdoel</button></form>
+    {% endif %}
     <table>
         <thead>
         <tr>
