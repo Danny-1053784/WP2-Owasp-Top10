@@ -23,11 +23,12 @@
     {{ request.endpoint }}
     {% if table_name in ["vragen"] %}
         <form action="/bad_questions"><button>ongeldige vragen</button></form>
+        <br>
+        <form action="/invalid_objective"><button>ongeldig leerdoel</button></form>
     {% endif %}
 
     {% if table_name in ["leerdoelen"] %}
-    <br>
-    <form action="/invalid_objective"><button>ongeldig leerdoel</button></form>
+    
     {% endif %}
     <table>
         <thead>
@@ -44,10 +45,10 @@
             <td>{{ field }}</td>
             {% endfor %}
             <td>
-
+<!-- 
             {% if table_name in ["vragen"] %}
               <a href="/update/{{row[0]}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="modaledit{{row[0]}}">Edit</a>
-            {% endif %}
+            {% endif %} -->
 
             </td>
         </tr>
