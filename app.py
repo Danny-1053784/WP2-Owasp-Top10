@@ -83,6 +83,20 @@ def invalid_objectives():
         "invalid_objective.html", rows=rows, columns=column_names, table_name="")
 
 
+
+@app.route("/update_invalid_objectives/<vraag_id>", methods=['GET', 'POST'])
+def update_invalid_objectives(vraag_id):
+    if request.method == 'GET':
+        leerdoel = dbm.read_invalid_objective(vraag_id)
+        return render_template(
+            "invalid_objective_update.html" , vraag_id=vraag_id, leerdoel=leerdoel 
+        )
+        # haal vraag info op en toon vraag detail pagina
+    elif request.method == "POST":
+        leerdoel = request.form['leerdoel']
+        dbm.update_invalid_objective(leerdoel, vraag_id)
+        return redirect(f'/invalid_objective')
+
 #edit table (Bryan)
 @app.route("/update/<vraag_id>", methods=['GET', 'POST'])
 def update(vraag_id):

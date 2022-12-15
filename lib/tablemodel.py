@@ -67,3 +67,20 @@ class DatabaseModel:
 
             # Note that this method returns 2 variables!
             return table_content, table_headers
+
+    def read_invalid_objective(self, id):
+            cursor = sqlite3.connect(self.database_file).cursor()
+            cursor.execute("SELECT leerdoel FROM vragen WHERE id="+id)
+        
+            
+            table_content = cursor.fetchone()[0]
+
+        
+            return table_content
+
+    def update_invalid_objective(self, leerdoel, id):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE vragen SET leerdoel = '{leerdoel}' WHERE id = {id}")
+        conn.commit()
+        return True
