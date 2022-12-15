@@ -6,6 +6,7 @@ from flask import Flask, render_template, redirect , request, session ,url_for, 
 
 
 from lib.tablemodel import DatabaseModel
+from lib.loginmodel import UserDatabaseModel
 from lib.demodatabase import create_demo_database
 
 # This demo glues a random database and the Flask framework. If the database file does not exist,
@@ -19,12 +20,13 @@ app = Flask(__name__)
 app.secret_key = "ImNotABigFanOfFlask69"
 # This command creates the "<application directory>/databases/testcorrect_vragen.db" path
 DATABASE_FILE = os.path.join(app.root_path, 'databases', 'testcorrect_vragen.db')
-
+USER_DATABASE_FILE = os.path.join(app.root_path, 'databases', 'user_details.db')
 # Check if the database file exists. If not, create a demo database
 if not os.path.isfile(DATABASE_FILE):
     print(f"Could not find database {DATABASE_FILE}, creating a demo database.")
     create_demo_database(DATABASE_FILE)
 dbm = DatabaseModel(DATABASE_FILE)
+dbu = UserDatabaseModel(USER_DATABASE_FILE)
 
 # Main route that shows a list of tables in the database
 # Note the "@app.route" decorator. This might be a new concept for you.
@@ -43,6 +45,7 @@ def getListTables():
     return render_template(
         "tables.html", table_list=tables, database_file=DATABASE_FILE
     )
+
 
 
 #redirect to tables page (Danny)
@@ -70,8 +73,29 @@ def table_content(table_name=None):
 def bad_questions():
     rows, column_names = dbm.get_bad_questions()
     return render_template(
-        "table_details.html", rows=rows, columns=column_names, table_name="")
+        "bad_questions.html", rows=rows, columns=column_names, table_name="")
 
+
+@app.route("/invalid_objective")
+def invalid_objectives():
+    rows, column_names = dbm.get_invalid_objective()
+    return render_template(
+        "invalid_objective.html", rows=rows, columns=column_names, table_name="")
+
+
+
+@app.route("/update_invalid_objectives/<vraag_id>", methods=['GET', 'POST'])
+def update_invalid_objectives(vraag_id):
+    if request.method == 'GET':
+        leerdoel = dbm.read_invalid_objective(vraag_id)
+        return render_template(
+            "invalid_objective_update.html" , vraag_id=vraag_id, leerdoel=leerdoel 
+        )
+        # haal vraag info op en toon vraag detail pagina
+    elif request.method == "POST":
+        leerdoel = request.form['leerdoel']
+        dbm.update_invalid_objective(leerdoel, vraag_id)
+        return redirect(f'/invalid_objective')
 
 #edit table (Bryan)
 @app.route("/update/<vraag_id>", methods=['GET', 'POST'])
@@ -87,14 +111,14 @@ def update(vraag_id):
         dbm.save_question(vraag, vraag_id)
         return redirect(f'/bad_questions')
 
-
+# Login function with username session and redirect (Danny)
 @app.route('/login', methods=["POST", "GET"])
 def login():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        print(dbm.user_login(username, password))
-        if dbm.user_login(username, password):
+        print(dbu.user_login(username, password))
+        if dbu.user_login(username, password):
             session['username'] = username
             tables = dbm.get_table_list()
             return render_template(
@@ -102,10 +126,18 @@ def login():
         else:
             return redirect(url_for('index'))
 
+# Logout (Danny)
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
+#Redirect for logo
+@app.route('/logoRedirect')
+def logoRedirect():
+    tables = dbm.get_table_list()
+    return render_template(
+    "tables.html", table_list=tables, database_file=DATABASE_FILE)
 
 
 if __name__ == "__main__":

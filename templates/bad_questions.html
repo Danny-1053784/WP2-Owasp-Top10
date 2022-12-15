@@ -18,13 +18,8 @@
 <main>
     <h1>Database onderzoek</h1>
     <p>Alle rijen in de tabel <b>{{ table_name }}</b>:</p>
-
- 
-    {{ request.endpoint }}
-    {% if table_name in ["vragen"] %}
-        <form action="/bad_questions"><button>ongeldige vragen</button></form>
-    {% endif %}
-
+    
+    <form action="/bad_questions"><button>filtered html button</button></form>
     <br>
     <form action="/invalid_objective"><button>ongeldig leerdoel</button></form>
     <table>
@@ -42,11 +37,7 @@
             <td>{{ field }}</td>
             {% endfor %}
             <td>
-
-            {% if table_name in ["vragen"] %}
               <a href="/update/{{row[0]}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="modaledit{{row[0]}}">Edit</a>
-            {% endif %}
-
             </td>
         </tr>
         {% endfor %}
