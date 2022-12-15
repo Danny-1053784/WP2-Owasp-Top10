@@ -73,7 +73,7 @@ def table_content(table_name=None):
 def bad_questions():
     rows, column_names = dbm.get_bad_questions()
     return render_template(
-        "table_details.html", rows=rows, columns=column_names, table_name="")
+        "bad_questions.html", rows=rows, columns=column_names, table_name="")
 
 
 #edit table (Bryan)
