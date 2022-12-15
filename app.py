@@ -76,6 +76,13 @@ def bad_questions():
         "bad_questions.html", rows=rows, columns=column_names, table_name="")
 
 
+@app.route("/invalid_objective")
+def invalid_objectives():
+    rows, column_names = dbm.get_invalid_objective()
+    return render_template(
+        "invalid_objective.html", rows=rows, columns=column_names, table_name="")
+
+
 #edit table (Bryan)
 @app.route("/update/<vraag_id>", methods=['GET', 'POST'])
 def update(vraag_id):
@@ -90,7 +97,7 @@ def update(vraag_id):
         dbm.save_question(vraag, vraag_id)
         return redirect(f'/bad_questions')
 
-
+# Login function with username session and redirect (Danny)
 @app.route('/login', methods=["POST", "GET"])
 def login():
     if request.method == 'POST':
@@ -105,12 +112,13 @@ def login():
         else:
             return redirect(url_for('index'))
 
+# Logout (Danny)
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('index'))
 
-
+#Redirect for logo
 @app.route('/logoRedirect')
 def logoRedirect():
     tables = dbm.get_table_list()
