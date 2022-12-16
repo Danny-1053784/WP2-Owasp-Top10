@@ -72,15 +72,17 @@ def table_content(table_name=None):
 @app.route("/bad_questions")
 def bad_questions():
     rows, column_names = dbm.get_bad_questions()
+    tables = dbm.get_table_list()
     return render_template(
-        "bad_questions.html", rows=rows, columns=column_names, table_name="")
+        "bad_questions.html", rows=rows, columns=column_names,table_list=tables, table_name="")
 
 
 @app.route("/invalid_objective")
 def invalid_objectives():
     rows, column_names = dbm.get_invalid_objective()
+    tables = dbm.get_table_list()
     return render_template(
-        "invalid_objective.html", rows=rows, columns=column_names, table_name="")
+        "invalid_objective.html", rows=rows, columns=column_names,table_list=tables, table_name="")
 
 
 
@@ -88,8 +90,9 @@ def invalid_objectives():
 def update_invalid_objectives(vraag_id):
     if request.method == 'GET':
         leerdoel = dbm.read_invalid_objective(vraag_id)
+        tables = dbm.get_table_list()
         return render_template(
-            "invalid_objective_update.html" , vraag_id=vraag_id, leerdoel=leerdoel 
+            "invalid_objective_update.html" , vraag_id=vraag_id, leerdoel=leerdoel ,table_list=tables
         )
         # haal vraag info op en toon vraag detail pagina
     elif request.method == "POST":
@@ -102,8 +105,9 @@ def update_invalid_objectives(vraag_id):
 def update(vraag_id):
     if request.method == 'GET':
         vraag = dbm.read_question(vraag_id)
+        tables = dbm.get_table_list()
         return render_template(
-            "question_details.html" , vraag_id=vraag_id, vraag=vraag 
+            "question_details.html" , vraag_id=vraag_id, vraag=vraag ,table_list=tables
         )
         # haal vraag info op en toon vraag detail pagina
     elif request.method == "POST":
