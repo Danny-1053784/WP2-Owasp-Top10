@@ -1,0 +1,19 @@
+a{
+    -webkit-align-items: center;
+    align-items: center;
+    color: #041f74;
+    display: -webkit-flex;
+    display: flex;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all .3s ease-in-out;
+
+}
+.me-lg-auto {
+    margin-right: auto!important;
+    align-items: center;
+    list-style: none;
+    margin: 0 0 0 25px;
+    padding: 0;
+}
