@@ -68,6 +68,16 @@ def table_content(table_name=None):
             "table_details.html", rows=rows, columns=column_names, table_name=table_name, table_list=tables
         )
 
+@app.route("/overview")
+def error_overview():
+    tables = dbm.get_table_list()
+    rows, column_names = dbm.show_errors()
+    return render_template(
+        "table_details.html", rows=rows, columns=column_names, table_list=tables
+    )
+
+
+
 #The table with filtered questions (Bryan)
 @app.route("/bad_questions")
 def bad_questions():
