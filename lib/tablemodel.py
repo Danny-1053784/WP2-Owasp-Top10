@@ -41,6 +41,21 @@ class DatabaseModel:
         return table_content, table_headers
         
 
+    def update_null_value_objective(self, vragen, id):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE leerdoel SET vragen = '{vragen}' WHERE id = {id}")
+        conn.commit()
+        return True
+
+    def update_null_value_author(self, author, id):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE author SET vragen = '{author}' WHERE id = {id}")
+        conn.commit()
+        return True
+
+
     def get_bad_questions(self):
         cursor = sqlite3.connect(self.database_file).cursor()
         cursor.execute("SELECT * FROM vragen WHERE vraag LIKE '%<br>%' OR vraag LIKE '%&nbsp%'")
