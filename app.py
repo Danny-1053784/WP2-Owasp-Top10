@@ -68,6 +68,7 @@ def table_content(table_name=None):
             "table_details.html", rows=rows, columns=column_names, table_name=table_name, table_list=tables
         )
 
+#Null values overview
 @app.route("/overview")
 def error_overview():
     tables = dbm.get_table_list()
@@ -75,7 +76,6 @@ def error_overview():
     return render_template(
         "table_details.html", rows=rows, columns=column_names, table_list=tables
     )
-
 
 
 #The table with filtered questions (Bryan)
