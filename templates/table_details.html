@@ -22,14 +22,25 @@
  
     {{ request.endpoint }}
     {% if table_name in ["vragen"] %}
-        <form action="/bad_questions"><button>ongeldige vragen</button></form>
+        <form action="/bad_questions"><button>Ongeldige vragen</button></form>
         <br>
-        <form action="/invalid_objective"><button>ongeldig leerdoel</button></form>
+        <form action="/invalid_objective"><button>Ongeldig leerdoel</button></form>
+        <br>
+        <form action="/overview"><button>Null values</button></form>
+
     {% endif %}
 
     {% if table_name in ["leerdoelen"] %}
     
+    
     {% endif %}
+
+    {% if table_name in ["overzicht"] %}
+        <form action="/overview"><button>Null values</button></form>
+    
+
+    {% endif %}
+
     <table>
         <thead>
         <tr>

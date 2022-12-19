@@ -30,6 +30,32 @@ class DatabaseModel:
         return table_content, table_headers
 
 
+    def show_errors(self):
+        cursor = sqlite3.connect(self.database_file).cursor()
+        cursor.execute("SELECT * FROM vragen WHERE leerdoel IS NULL OR vraag IS NULL OR auteur IS NULL")
+        # An alternative for this 2 var approach is to set a sqlite row_factory on the connection
+        table_headers = [column_name[0] for column_name in cursor.description]
+        table_content = cursor.fetchall()
+
+        # Note that this method returns 2 variables!
+        return table_content, table_headers
+        
+
+    def update_null_value_objective(self, vragen, id):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE leerdoel SET vragen = '{vragen}' WHERE id = {id}")
+        conn.commit()
+        return True
+
+    def update_null_value_author(self, author, id):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE author SET vragen = '{author}' WHERE id = {id}")
+        conn.commit()
+        return True
+
+
     def get_bad_questions(self):
         cursor = sqlite3.connect(self.database_file).cursor()
         cursor.execute("SELECT * FROM vragen WHERE vraag LIKE '%<br>%' OR vraag LIKE '%&nbsp%'")

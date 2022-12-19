@@ -10,10 +10,13 @@
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
   
             {% for table in table_list %}
+
             <li><a href="/table_details/{{ table }}">{{ table }}</a></li>
+
             {% endfor %}
 
-         
+            <li><a href="/overview">overzicht</a></li>
+            
           
           <!-- use this to add templates to the navbar -->
           <!-- <a href="{{ url_for('index') }}" class="nav-link px-2 text-white">home</a>  </ul> -->
