@@ -76,17 +76,19 @@ def error_overview():
     return render_template("overview.html", rows=rows, columns=column_names,table_list=tables, table_name="")
 
 @app.route("/update_overview/<vraag_id>", methods=['GET', 'POST'])
-def update_invalid_objectives(vraag_id):
+def update_invalid_objectives2(vraag_id):
     if request.method == 'GET':
         leerdoel = dbm.read_invalid_objective(vraag_id)
+        auteur = dbm.auteur(vraag_id)
         tables = dbm.get_table_list()
         return render_template(
-            "overview_update.html" , vraag_id=vraag_id, leerdoel=leerdoel ,table_list=tables
-        )
+            "overview_update.html" , vraag_id=vraag_id, leerdoel=leerdoel,table_list=tables, auteur=auteur)
         # haal vraag info op en toon vraag detail pagina
     elif request.method == "POST":
         leerdoel = request.form['leerdoel']
-        dbm.update_overview(leerdoel, vraag_id)
+        auteur = request.form['auteur']
+        dbm.update_overview_leerdoel(leerdoel, vraag_id)
+        dbm.update_overview_auteur(auteur, vraag_id)
         return redirect(f'/overview')
 
 
