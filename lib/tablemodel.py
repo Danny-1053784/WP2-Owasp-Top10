@@ -110,3 +110,10 @@ class DatabaseModel:
         cursor.execute(f"UPDATE vragen SET leerdoel = '{leerdoel}' WHERE id = {id}")
         conn.commit()
         return True
+
+    def update_overview(self, leerdoel, id):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE vragen SET leerdoel = '{leerdoel}' WHERE id = {id}")
+        conn.commit()
+        return True
