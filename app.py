@@ -90,9 +90,10 @@ def invalid_objectives():
 def update_invalid_objectives(vraag_id):
     if request.method == 'GET':
         leerdoel = dbm.read_invalid_objective(vraag_id)
+        leerdoelen = dbm.read_invalid_objective_update()
         tables = dbm.get_table_list()
         return render_template(
-            "invalid_objective_update.html" , vraag_id=vraag_id, leerdoel=leerdoel ,table_list=tables
+            "invalid_objective_update.html" , vraag_id=vraag_id, leerdoel=leerdoel , table_list=tables , leerdoelen=leerdoelen
         )
         # haal vraag info op en toon vraag detail pagina
     elif request.method == "POST":
