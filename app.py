@@ -141,7 +141,27 @@ def update(vraag_id):
     elif request.method == "POST":
         vraag = request.form['vraag']
         dbm.save_question(vraag, vraag_id)
-        return redirect(f'/bad_questions')
+        return redirect(f'/table_details/vragen')
+
+
+@app.route("/delete_question")
+def delete_question(id):
+    rows, column_names = dbm.remove_delete_questions(id)
+    tables = dbm.get_table_list()
+    return render_template(
+        "delete_question.html", rows=rows, columns=column_names,table_list=tables, table_name="")
+
+@app.route("/delete/<id>", methods=['GET', 'POST'])
+def delete(id):
+    if request.method == 'GET':
+        vraag = dbm.read_question(id)
+        tables = dbm.get_table_list()
+        return render_template(
+            "delete_question.html" , vraag_id=id, vraag=vraag ,table_list=tables
+        )
+    elif request.method == "POST":
+        dbm.remove_delete_questions(id)
+        return redirect(f'/table_details/vragen')
 
 # Login function with username session and redirect (Danny)
 @app.route('/login', methods=["POST", "GET"])
