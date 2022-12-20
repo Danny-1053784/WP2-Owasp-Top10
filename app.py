@@ -114,14 +114,18 @@ def invalid_objectives():
 def update_invalid_objective(vraag_id):
     if request.method == 'GET':
         leerdoel = dbm.read_invalid_objective(vraag_id)
+        leerdoelen = dbm.read_invalid_objective_update()
+        leerdoelen_name = dbm.read_invalid_objective_name_update()
         tables = dbm.get_table_list()
         return render_template(
-            "invalid_objective_update.html" , vraag_id=vraag_id, leerdoel=leerdoel ,table_list=tables
+            "invalid_objective_update.html" , vraag_id=vraag_id, leerdoel=leerdoel , table_list=tables , leerdoelen=leerdoelen, leerdoelen_name=leerdoelen_name
         )
         # haal vraag info op en toon vraag detail pagina
     elif request.method == "POST":
         leerdoel = request.form['leerdoel']
-        dbm.update_invalid_objective(leerdoel, vraag_id)
+        session['leerdoel_id'] = leerdoel
+        leerdoel_id = dbm.read_objective_id()      
+        dbm.update_invalid_objective( leerdoel_id, vraag_id)
         return redirect(f'/invalid_objective')
 
 #edit table (Bryan)
