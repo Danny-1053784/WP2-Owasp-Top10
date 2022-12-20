@@ -167,7 +167,7 @@ class DatabaseModel:
         conn.commit()
         return True
         
-      def auteur(self, id):
+    def auteur(self, id):
         cursor = sqlite3.connect(self.database_file).cursor()
         cursor.execute("SELECT auteur FROM vragen WHERE id="+id)
     
