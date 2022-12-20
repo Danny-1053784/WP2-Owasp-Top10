@@ -115,7 +115,7 @@ def update_invalid_objective(vraag_id):
 
 
 @app.route("/update_overview/<vraag_id>", methods=['GET', 'POST'])
-def update_invalid_objectives2(vraag_id):
+def update_invalid_values(vraag_id):
     if request.method == 'GET':
         leerdoel = dbm.read_invalid_objective(vraag_id)
         auteur = dbm.auteur(vraag_id)
@@ -125,12 +125,20 @@ def update_invalid_objectives2(vraag_id):
         return render_template(
             "overview_update.html" , vraag_id=vraag_id, leerdoel=leerdoel,table_list=tables, auteur=auteur, leerdoelen_name=leerdoelen_name, auteur_name = auteur_name)
         # haal vraag info op en toon vraag detail pagina
-    elif request.method == "POST":
-        leerdoel = request.form['leerdoel']
-        auteur = request.form['auteur']
-        dbm.update_overview_leerdoel(leerdoel, vraag_id)
-        dbm.update_overview_auteur(auteur, vraag_id)
-        return redirect(f'/overview')
+    if request.method == 'POST' and request.form.get('leerdoel'):
+            leerdoel = request.form['leerdoel']
+            session['leerdoel_overview_id'] = leerdoel
+            read_objective_overview_id = dbm.read_objective_overview_id()  
+            dbm.update_invalid_objective(read_objective_overview_id, vraag_id)
+            return redirect(f'/overview')
+    elif request.method == 'POST' and request.form.get('auteur'):
+            auteur = request.form['auteur']
+            session['auteur_overview_id'] = auteur
+            read_objective_auteur_id = dbm.read_auteur_overview_id()  
+            dbm.update_overview_auteur(read_objective_auteur_id, vraag_id)
+            return redirect(f'/overview')
+       
+      
 
 #edit table (Bryan)
 @app.route("/update/<vraag_id>", methods=['GET', 'POST'])

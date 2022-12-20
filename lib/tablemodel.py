@@ -127,6 +127,26 @@ class DatabaseModel:
 
 
 
+    def read_objective_overview_id(self):
+                cursor = sqlite3.connect(self.database_file).cursor()
+                cursor.execute("SELECT id FROM leerdoelen WHERE leerdoel = ?", (session.get('leerdoel_overview_id'),))
+            
+                
+                table_content = cursor.fetchone()[0]
+
+            
+                return table_content
+
+    def read_auteur_overview_id(self):
+                cursor = sqlite3.connect(self.database_file).cursor()
+                cursor.execute("SELECT id FROM auteurs WHERE achternaam = ?", (session.get('auteur_overview_id'),))
+            
+                
+                table_content = cursor.fetchone()[0]
+
+            
+                return table_content
+
     def read_invalid_objective_update(self):
             cursor = sqlite3.connect(self.database_file).cursor()
             cursor.execute("SELECT id from leerdoelen group by id")
@@ -155,13 +175,6 @@ class DatabaseModel:
             return table_content            
                 
     def update_invalid_objective(self, leerdoel, id):
-        conn = sqlite3.connect(self.database_file)
-        cursor = conn.cursor()
-        cursor.execute(f"UPDATE vragen SET leerdoel = '{leerdoel}' WHERE id = {id}")
-        conn.commit()
-        return True
-
-    def update_overview_leerdoel(self, leerdoel, id):
         conn = sqlite3.connect(self.database_file)
         cursor = conn.cursor()
         cursor.execute(f"UPDATE vragen SET leerdoel = '{leerdoel}' WHERE id = {id}")
