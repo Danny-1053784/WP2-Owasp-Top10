@@ -91,12 +91,15 @@ class DatabaseModel:
     def read_invalid_objective_update(self):
             cursor = sqlite3.connect(self.database_file).cursor()
             cursor.execute("SELECT id from leerdoelen")
-        
-            table_content = cursor.fetchall()
 
+           
+            table_content =[ table_content[0] for table_content in cursor.fetchall()]
             # Note that this method returns 2 variables!
             return table_content
-            
+           
+           
+            # Note that this method returns 2 variables!
+          
 
     def update_invalid_objective(self, leerdoel, id):
         conn = sqlite3.connect(self.database_file)
