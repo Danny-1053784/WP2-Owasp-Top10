@@ -157,7 +157,7 @@ def delete(vraag_id):
         vraag = dbm.read_question(vraag_id)
         tables = dbm.get_table_list()
         return render_template(
-            "question_details.html" , vraag_id=vraag_id, vraag=vraag ,table_list=tables
+            "delete_question.html" , vraag_id=vraag_id, vraag=vraag ,table_list=tables
         )
     elif request.method == "POST":
         vraag = request.form['vraag']
