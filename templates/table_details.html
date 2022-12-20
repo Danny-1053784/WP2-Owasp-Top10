@@ -27,20 +27,14 @@
         <form action="/invalid_objective"><button>Ongeldig leerdoel</button></form>
         <br>
         <form action="/overview"><button>Null values</button></form>
-
     {% endif %}
 
     {% if table_name in ["leerdoelen"] %}
     
-    
     {% endif %}
-
     {% if table_name in ["overzicht"] %}
         <form action="/overview"><button>Null values</button></form>
-    
-
     {% endif %}
-
     <table>
         <thead>
         <tr>
@@ -56,10 +50,14 @@
             <td>{{ field }}</td>
             {% endfor %}
             <td>
-<!-- 
+
             {% if table_name in ["vragen"] %}
               <a href="/update/{{row[0]}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="modaledit{{row[0]}}">Edit</a>
-            {% endif %} -->
+            {% endif %}
+
+            {% if table_name in ["vragen"] %}
+              <a href="/delete/{{row[0]}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="modaldelete{{row[0]}}">Delete</a>
+            {% endif %}
 
             </td>
         </tr>

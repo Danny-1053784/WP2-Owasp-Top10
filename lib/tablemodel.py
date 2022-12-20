@@ -66,6 +66,14 @@ class DatabaseModel:
         # Note that this method returns 2 variables!
         return table_content, table_headers
 
+    def remove_delete_questions(self, id):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.execute(f"DELETE * FROM vragen WHERE id ="+id)
+        conn.commit()
+        return True
+
+
     def read_question(self, id):
         cursor = sqlite3.connect(self.database_file).cursor()
         cursor.execute("SELECT vraag FROM vragen WHERE id="+id)
