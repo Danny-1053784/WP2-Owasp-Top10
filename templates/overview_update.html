@@ -14,15 +14,26 @@
 
 <form action= "" class="update" method = "POST">
 
+
+
 {% if leerdoel == None %}
-<p>Leerdoel: <input type = "text" value="{{ leerdoel }}" size="200" name="leerdoel"/></p>
+Leerdoel:
+<select name="leerdoel" id="update" class="update">
+    {% for leerdoel in leerdoelen_name %}
+  
+            <option value= "{{ leerdoel }}" name="leerdoel">{{ leerdoel }}</option>
+    {% endfor %}
 {% endif %}
+
 
 {% if auteur == None %}
-<p>Auteur: <input type = "text" value="{{ auteur }}" size="200" name="auteur"/></p>
+Auteur:
+<select name="leerdoel" id="update" class="update">
+    {% for auteur in auteur_name %}
+  
+            <option value= "{{ auteur }}" name="leerdoel">{{ auteur }}</option>
+    {% endfor %}
 {% endif %}
-
-
 
 
 <p><input type = "submit" value = "Submit" /></p>

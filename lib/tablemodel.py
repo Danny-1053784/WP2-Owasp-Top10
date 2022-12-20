@@ -144,7 +144,15 @@ class DatabaseModel:
             table_content =[ table_content[0] for table_content in cursor.fetchall()]
             # Note that this method returns 2 variables!
             return table_content
-                
+            
+    def read_invalid_auteur_name_update(self):
+            cursor = sqlite3.connect(self.database_file).cursor()
+            cursor.execute("SELECT achternaam,id from auteurs")
+
+           
+            table_content =[ table_content[0] for table_content in cursor.fetchall()]
+            # Note that this method returns 2 variables!
+            return table_content            
                 
     def update_invalid_objective(self, leerdoel, id):
         conn = sqlite3.connect(self.database_file)
