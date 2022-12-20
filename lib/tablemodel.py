@@ -104,9 +104,32 @@ class DatabaseModel:
         
             return table_content
 
+    #Nicky
+    def auteur(self, id):
+        cursor = sqlite3.connect(self.database_file).cursor()
+        cursor.execute("SELECT auteur FROM vragen WHERE id="+id)
+    
+        table_content = cursor.fetchone()[0]
+
+        return table_content
+
     def update_invalid_objective(self, leerdoel, id):
         conn = sqlite3.connect(self.database_file)
         cursor = conn.cursor()
         cursor.execute(f"UPDATE vragen SET leerdoel = '{leerdoel}' WHERE id = {id}")
+        conn.commit()
+        return True
+
+    def update_overview_leerdoel(self, leerdoel, id):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE vragen SET leerdoel = '{leerdoel}' WHERE id = {id}")
+        conn.commit()
+        return True
+
+    def update_overview_auteur(self, auteur, id):
+        conn = sqlite3.connect(self.database_file)
+        cursor = conn.cursor()
+        cursor.execute(f"UPDATE vragen SET auteur = '{auteur}' WHERE id = {id}")
         conn.commit()
         return True
