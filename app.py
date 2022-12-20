@@ -161,7 +161,7 @@ def delete(id):
         )
     elif request.method == "POST":
         dbm.remove_delete_questions(id)
-        return redirect(f'/delete_question'), id
+        return redirect(f'/table_details/vragen')
 
 # Login function with username session and redirect (Danny)
 @app.route('/login', methods=["POST", "GET"])
