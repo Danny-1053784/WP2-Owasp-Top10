@@ -160,8 +160,7 @@ def delete(vraag_id):
             "delete_question.html" , vraag_id=vraag_id, vraag=vraag ,table_list=tables
         )
     elif request.method == "POST":
-        vraag = request.form['vraag']
-        dbm.save_question(vraag, vraag_id)
+        dbm.remove_delete_questions(vraag_id)
         return redirect(f'/delete_question')
 
 # Login function with username session and redirect (Danny)

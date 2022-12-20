@@ -69,7 +69,7 @@ class DatabaseModel:
     def remove_delete_questions(self, id):
         conn = sqlite3.connect(self.database_file)
         cursor = conn.cursor()
-        cursor.execute(f"DELETE * FROM vragen WHERE id ="+id)
+        cursor.execute(f"DELETE FROM vragen WHERE id ="+id)
         conn.commit()
         return True
 
