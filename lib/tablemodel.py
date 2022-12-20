@@ -1,6 +1,6 @@
 import os
 import sqlite3
-
+from flask import Flask, session 
 
 class DatabaseModel:
     """This class is a wrapper around the sqlite3 database. It provides a simple interface that maps methods
@@ -88,18 +88,36 @@ class DatabaseModel:
         
             return table_content
 
+    def read_objective_id(self):
+                cursor = sqlite3.connect(self.database_file).cursor()
+                cursor.execute("SELECT id FROM leerdoelen WHERE leerdoel = ?", (session.get('leerdoel_id'),))
+            
+                
+                table_content = cursor.fetchone()[0]
+
+            
+                return table_content
+
+
+
     def read_invalid_objective_update(self):
             cursor = sqlite3.connect(self.database_file).cursor()
-            cursor.execute("SELECT id from leerdoelen")
+            cursor.execute("SELECT id from leerdoelen group by id")
 
            
             table_content =[ table_content[0] for table_content in cursor.fetchall()]
             # Note that this method returns 2 variables!
             return table_content
+
+    def read_invalid_objective_name_update(self):
+            cursor = sqlite3.connect(self.database_file).cursor()
+            cursor.execute("SELECT leerdoel,id from leerdoelen group by leerdoel")
+
            
-           
+            table_content =[ table_content[0] for table_content in cursor.fetchall()]
             # Note that this method returns 2 variables!
-          
+            return table_content
+                
 
     def update_invalid_objective(self, leerdoel, id):
         conn = sqlite3.connect(self.database_file)
