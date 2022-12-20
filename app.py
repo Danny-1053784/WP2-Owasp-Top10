@@ -151,7 +151,7 @@ def delete_question(id):
     return render_template(
         "delete_question.html", rows=rows, columns=column_names,table_list=tables, table_name="")
 
-@app.route("/delete/<vraag_id>", methods=['GET', 'POST'])
+@app.route("/delete/<id>", methods=['GET', 'POST'])
 def delete(id):
     if request.method == 'GET':
         vraag = dbm.read_question(id)
