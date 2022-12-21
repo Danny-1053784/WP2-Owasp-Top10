@@ -99,11 +99,12 @@ def invalid_objectives():
 def update_invalid_objective(vraag_id):
     if request.method == 'GET':
         leerdoel = dbm.read_invalid_objective(vraag_id)
+        vraag = dbm.read_question(vraag_id)
         leerdoelen = dbm.read_invalid_objective_update()
         leerdoelen_name = dbm.read_invalid_objective_name_update()
         tables = dbm.get_table_list()
         return render_template(
-            "invalid_objective_update.html" , vraag_id=vraag_id, leerdoel=leerdoel , table_list=tables , leerdoelen=leerdoelen, leerdoelen_name=leerdoelen_name
+            "invalid_objective_update.html" , vraag_id=vraag_id, leerdoel=leerdoel , table_list=tables , leerdoelen=leerdoelen, leerdoelen_name=leerdoelen_name, vraag=vraag 
         )
         # haal vraag info op en toon vraag detail pagina
     elif request.method == "POST":
@@ -119,11 +120,12 @@ def update_invalid_values(vraag_id):
     if request.method == 'GET':
         leerdoel = dbm.read_invalid_objective(vraag_id)
         auteur = dbm.auteur(vraag_id)
+        vraag = dbm.read_question(vraag_id)
         leerdoelen_name = dbm.read_invalid_objective_name_update()
         auteur_name = dbm.read_invalid_auteur_name_update()
         tables = dbm.get_table_list()
         return render_template(
-            "overview_update.html" , vraag_id=vraag_id, leerdoel=leerdoel,table_list=tables, auteur=auteur, leerdoelen_name=leerdoelen_name, auteur_name = auteur_name)
+            "overview_update.html" , vraag_id=vraag_id, leerdoel=leerdoel,table_list=tables, auteur=auteur, leerdoelen_name=leerdoelen_name, auteur_name = auteur_name, vraag=vraag)
         # haal vraag info op en toon vraag detail pagina
     if request.method == 'POST' and request.form.get('leerdoel'):
             leerdoel = request.form['leerdoel']
