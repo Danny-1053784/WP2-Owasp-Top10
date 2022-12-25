@@ -31,3 +31,7 @@ tr {
     line-height: 1.33;
     font-family: Nunito,sans-serif;
 }
+.filter-button{
+    margin-left: 0.5%;
+    color: white !important;
+}
