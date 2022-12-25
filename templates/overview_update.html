@@ -15,7 +15,28 @@
 <a href="https://www.test-correct.nl/?vraag={{vraag_id}}" class="update_questions">meer informatie over deze vraag</a>
 <br>
 
-{% if leerdoel == None %}
+{% if auteur == None and leerdoel == None %}
+<form action= "" class="update" method = "POST">
+
+Auteur:
+<select name="auteur" id="update" class="update">
+    {% for auteur in auteur_name %}
+  
+            <option value= "{{ auteur }}" name="auteur">{{ auteur }}</option>
+    {% endfor %}
+</select>  
+Leerdoel: 
+<select name="leerdoel" id="update" class="update">
+    {% for leerdoel in leerdoelen_name %}
+      
+            <option value= "{{ leerdoel }}" name="leerdoel">{{ leerdoel }}</option>
+    {% endfor %}
+</select>
+{% endif %}
+
+
+
+{% if leerdoel == None and not auteur == None %}
 <form action= "" class="update" method = "POST">
 
 Leerdoel:
@@ -27,7 +48,7 @@ Leerdoel:
 {% endif %}
 
 
-{% if auteur == None %}
+{% if auteur == None and not leerdoel == None %}
 <form action= "" class="update" method = "POST">
 
 Auteur:

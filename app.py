@@ -127,7 +127,17 @@ def update_invalid_values(vraag_id):
         return render_template(
             "overview_update.html" , vraag_id=vraag_id, leerdoel=leerdoel,table_list=tables, auteur=auteur, leerdoelen_name=leerdoelen_name, auteur_name = auteur_name, vraag=vraag)
         # haal vraag info op en toon vraag detail pagina
-    if request.method == 'POST' and request.form.get('leerdoel'):
+    if request.method == 'POST' and request.form.get('leerdoel') and request.form.get('auteur'):    
+            leerdoel = request.form['leerdoel']
+            auteur = request.form['auteur']
+            session['leerdoel_overview_id'] = leerdoel
+            session['auteur_overview_id'] = auteur
+            read_objective_overview_id = dbm.read_objective_overview_id()  
+            read_objective_auteur_id = dbm.read_auteur_overview_id()  
+            dbm.update_invalid_objective(read_objective_overview_id, vraag_id)
+            dbm.update_overview_auteur(read_objective_auteur_id, vraag_id)
+            return redirect(f'/overview')
+    elif request.method == 'POST' and request.form.get('leerdoel'):
             leerdoel = request.form['leerdoel']
             session['leerdoel_overview_id'] = leerdoel
             read_objective_overview_id = dbm.read_objective_overview_id()  
