@@ -40,8 +40,8 @@
         <thead>
         <tr>
             {% if table_name in ["vragen"] %}
-            {% for column in columns %}
-            <th>{{ column }}</th>
+                {% for column in columns %}
+                    <th>{{ column }} </th>
             {% endfor %}
             
         </tr>
@@ -52,7 +52,7 @@
    
         <tr>
             {% for field in row %}
-            <td>{{ field }}</td>
+            <td>{{ field }} </td>
             {% endfor %}
             <td>
             
@@ -89,19 +89,7 @@
         {% for field in row %}
         <td>{{ field }}</td>
         {% endfor %}
-        <td>
-        
-        <td>
-        {% if table_name in ["vragen"] %}
-          <a href="/update/{{row[0]}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="modaledit{{row[0]}}">Edit</a>
-        {% endif %}
-        </td>
-        <td>
-        {% if table_name in ["vragen"] %}
-          <a href="/delete/{{row[0]}}" class="btn btn-warning btn-xs" data-toggle="modal" data-target="modaldelete{{row[0]}}">Delete</a>
-        {% endif %}
-        </td>
-        </td>
+       
     </tr>
     {% endfor %}
     </tbody>

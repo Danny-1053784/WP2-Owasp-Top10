@@ -59,7 +59,13 @@ def showTables():
 # The table route displays the content of a table
 @app.route("/table_details/<table_name>")
 def table_content(table_name=None):
-    if not table_name:
+    if table_name == "vragen":
+        tables = dbm.get_table_list()
+        rows, column_names = dbm.get_table_content_vragen()
+        return render_template(
+            "table_details.html", rows=rows, columns=column_names, table_name=table_name, table_list=tables
+        )
+    elif not table_name:
         return "Missing table name", 400  # HTTP 400 = Bad Request
     else:
         tables = dbm.get_table_list()
