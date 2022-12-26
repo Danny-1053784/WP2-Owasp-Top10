@@ -31,7 +31,7 @@ class DatabaseModel:
 
     def get_table_content_vragen(self ):
         cursor = sqlite3.connect(self.database_file).cursor()
-        cursor.execute("SELECT pt.id,pt.vraag,pb.leerdoel,pm.voornaam,pm.achternaam FROM `vragen`as pt INNER JOIN `leerdoelen` as pb ON pt.leerdoel = pb.id INNER JOIN `auteurs` as pm ON pt.auteur = pm.id")
+        cursor.execute("SELECT pt.id,pt.vraag,pb.leerdoel,pm.voornaam,pm.achternaam FROM `vragen`as pt LEFT JOIN `leerdoelen` as pb ON pt.leerdoel = pb.id LEFT JOIN `auteurs` as pm ON pt.auteur = pm.id")
         # An alternative for this 2 var approach is to set a sqlite row_factory on the connection
         table_headers = [column_name[0] for column_name in cursor.description]
         table_content = cursor.fetchall()
