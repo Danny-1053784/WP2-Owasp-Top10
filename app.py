@@ -59,7 +59,13 @@ def showTables():
 # The table route displays the content of a table
 @app.route("/table_details/<table_name>")
 def table_content(table_name=None):
-    if not table_name:
+    if table_name == "vragen":
+        tables = dbm.get_table_list()
+        rows, column_names = dbm.get_table_content_vragen()
+        return render_template(
+            "table_details.html", rows=rows, columns=column_names, table_name=table_name, table_list=tables
+        )
+    elif not table_name:
         return "Missing table name", 400  # HTTP 400 = Bad Request
     else:
         tables = dbm.get_table_list()
@@ -127,7 +133,17 @@ def update_invalid_values(vraag_id):
         return render_template(
             "overview_update.html" , vraag_id=vraag_id, leerdoel=leerdoel,table_list=tables, auteur=auteur, leerdoelen_name=leerdoelen_name, auteur_name = auteur_name, vraag=vraag)
         # haal vraag info op en toon vraag detail pagina
-    if request.method == 'POST' and request.form.get('leerdoel'):
+    if request.method == 'POST' and request.form.get('leerdoel') and request.form.get('auteur'):    
+            leerdoel = request.form['leerdoel']
+            auteur = request.form['auteur']
+            session['leerdoel_overview_id'] = leerdoel
+            session['auteur_overview_id'] = auteur
+            read_objective_overview_id = dbm.read_objective_overview_id()  
+            read_objective_auteur_id = dbm.read_auteur_overview_id()  
+            dbm.update_invalid_objective(read_objective_overview_id, vraag_id)
+            dbm.update_overview_auteur(read_objective_auteur_id, vraag_id)
+            return redirect(f'/overview')
+    elif request.method == 'POST' and request.form.get('leerdoel'):
             leerdoel = request.form['leerdoel']
             session['leerdoel_overview_id'] = leerdoel
             read_objective_overview_id = dbm.read_objective_overview_id()  

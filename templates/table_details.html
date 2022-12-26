@@ -20,13 +20,14 @@
     <p>Alle rijen in de tabel <b>{{ table_name }}</b>:</p>
 
  
+<!-- Table is  vragen  -->
     
     {% if table_name in ["vragen"] %}
-        <form action="/bad_questions"><button>Ongeldige vragen</button></form>
+        <form class="filter-button" action="/bad_questions"><button>Ongeldige vragen</button></form>
         <br>
-        <form action="/invalid_objective"><button>Ongeldig leerdoel</button></form>
+        <form class="filter-button" action="/invalid_objective"><button>Ongeldig leerdoel</button></form>
         <br>
-        <form action="/overview"><button>Null values</button></form>
+        <form class="filter-button" action="/overview"><button>Null values</button></form>
     {% endif %}
 
     {% if table_name in ["leerdoelen"] %}
@@ -38,16 +39,20 @@
     <table>
         <thead>
         <tr>
-            {% for column in columns %}
-            <th>{{ column }}</th>
+            {% if table_name in ["vragen"] %}
+                {% for column in columns %}
+                    <th>{{ column }} </th>
             {% endfor %}
+            
         </tr>
         </thead>
         <tbody>
+   
         {% for row in rows %}
+   
         <tr>
             {% for field in row %}
-            <td>{{ field }}</td>
+            <td>{{ field }} </td>
             {% endfor %}
             <td>
             
@@ -65,7 +70,30 @@
         </tr>
         {% endfor %}
         </tbody>
+        {% endif %}
 
+<!-- Table is not vragen  -->
+
+        {% if table_name not in ["vragen"] %}
+        {% for column in columns %}
+        <th>{{ column }}</th>
+        {% endfor %}
+        
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for row in rows %}
+
+    <tr>
+        {% for field in row %}
+        <td>{{ field }}</td>
+        {% endfor %}
+       
+    </tr>
+    {% endfor %}
+    </tbody>
+    {% endif %}
     </table>
 </main>
 </body>
