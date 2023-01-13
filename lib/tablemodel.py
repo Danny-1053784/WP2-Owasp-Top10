@@ -212,3 +212,50 @@ class DatabaseModel:
         table_content = cursor.fetchone()[0]
 
         return table_content
+
+    def nicky_get_table_content(self, table_name):
+        cursor = sqlite3.connect(self.database_file).cursor()
+        cursor.execute(f"SELECT * FROM {table_name} ")
+        # An alternative for this 2 var approach is to set a sqlite row_factory on the connection
+        table_headers = [column_name[0] for column_name in cursor.description]
+        table_content = cursor.fetchall()
+
+        # Note that this method returns 2 variables!
+        return table_headers
+
+    def nicky_get_table_content_vragen(self):
+        cursor = sqlite3.connect(self.database_file).cursor()
+        cursor.execute("SELECT pt.id,pt.vraag,pb.leerdoel,pm.voornaam,pm.achternaam FROM `vragen`as pt LEFT JOIN `leerdoelen` as pb ON pt.leerdoel = pb.id LEFT JOIN `auteurs` as pm ON pt.auteur = pm.id")
+        # An alternative for this 2 var approach is to set a sqlite row_factory on the connection
+        table_headers = [column_name[0] for column_name in cursor.description]
+        table_content = cursor.fetchall()
+
+        # Note that this method returns 2 variables!
+        return table_headers
+
+
+    #nieuw
+    def user_input_selection(self, kolom, tabel, value1, value2):
+        cursor = sqlite3.connect(self.database_file).cursor()
+        
+        if kolom in ['voornaam', 'achternaam']:
+                value1 = value1.title()
+                value2 = value2.title()
+
+        if tabel == 'vragen':
+            if kolom == 'leerdoel':
+                kolom = 'pb.leerdoel'
+            if kolom == 'id':
+                kolom = 'pt.id'
+            
+            cursor.execute(f"SELECT pt.id,pt.vraag,pb.leerdoel,pm.voornaam,pm.achternaam FROM `vragen`as pt LEFT JOIN `leerdoelen` as pb ON pt.leerdoel = pb.id LEFT JOIN `auteurs` as pm ON pt.auteur = pm.id WHERE {kolom} BETWEEN '{value1}' and '{value2}' ORDER BY {kolom}")
+
+        else:    
+            cursor.execute(f"SELECT * FROM {tabel} WHERE {kolom} BETWEEN '{value1}' and '{value2}' ORDER BY {kolom}")
+
+        table_headers = [column_name[0] for column_name in cursor.description]
+        table_content = cursor.fetchall()
+
+        return table_content, table_headers
+
+        
