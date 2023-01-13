@@ -2,8 +2,8 @@ import os.path
 
 import sys
 
-from flask import Flask, render_template, redirect , request, session ,url_for, abort
-
+from flask import Flask, render_template, redirect , request, session ,url_for, abort, make_response
+from io import StringIO
 
 from lib.tablemodel import DatabaseModel
 from lib.loginmodel import UserDatabaseModel
@@ -192,6 +192,43 @@ def delete(id):
     elif request.method == "POST":
         dbm.remove_delete_questions(id)
         return redirect(f'/table_details/vragen')
+
+@app.route('/selection', methods = ["POST", "GET"])
+def selection():
+    #rows, column_names = dbm.show_errors()
+    tables = dbm.get_table_list()
+    
+    # code om ervoor te zorgen dat in JavaScript een lijst wordt meegegeven van tabel- en kolomnamen
+    # werkt momenteel niet
+    # in 'selection.html' zie je momenteel dat de namen handmatig zijn ingevoerd 
+    tblklmdict = {}
+    for table in tables:
+        if table == "vragen":
+            tc1 = dbm.nicky_get_table_content_vragen()
+            tblklmdict[table] = tc1
+        else:
+            tc1 = dbm.nicky_get_table_content(table)
+            tblklmdict[table] = tc1
+    abc = next(iter(tblklmdict))
+    
+    return render_template("selection.html",table_list=tables, table_name="", tblklmdict = tblklmdict, abc = abc)
+
+@app.route('/confirmed_selection', methods = ["POST"])
+def confirmed_selection():
+    tables = dbm.get_table_list()
+    selected_table = str(tables[int(request.form.get('first'))])
+    selected_column = str(request.form.get('second'))
+    value1 = str(request.form.get('value1'))
+    value2 = str(request.form.get('value2'))
+
+    rows, column_names = dbm.user_input_selection(selected_column, 
+        selected_table, value1, value2)
+    return render_template("confirmed_selection.html", rows=rows, 
+        columns=column_names, table_name="", table_list=tables)
+
+@app.route('/export/<int:identifier>', methods=['GET'])
+def export(load_file_id):
+    pass
 
 # Login function with username session and redirect (Danny)
 @app.route('/login', methods=["POST", "GET"])
