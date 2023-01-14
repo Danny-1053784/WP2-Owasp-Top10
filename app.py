@@ -1,7 +1,7 @@
 import os.path
 
 import sys
-
+import sqlite3
 from flask import Flask, render_template, redirect , request, session ,url_for, abort, make_response
 from io import StringIO
 
@@ -27,6 +27,15 @@ if not os.path.isfile(DATABASE_FILE):
     create_demo_database(DATABASE_FILE)
 dbm = DatabaseModel(DATABASE_FILE)
 dbu = UserDatabaseModel(USER_DATABASE_FILE)
+
+#changed column name 'met pensioen' to 'MetPensioen' because SQL has difficulties working with spaces in column names
+cursor_new_column = sqlite3.connect(DATABASE_FILE).cursor()
+cursor_new_column.execute("SELECT * FROM 'auteurs'")
+table_headers = [column_name[0] for column_name in cursor_new_column.description]
+if 'met pensioen' in table_headers:
+    cursor_new_column.execute("ALTER TABLE 'auteurs' RENAME COLUMN 'met pensioen' to 'MetPensioen' ")
+    cursor_new_column.fetchall()
+
 
 # Main route that shows a list of tables in the database
 # Note the "@app.route" decorator. This might be a new concept for you.
