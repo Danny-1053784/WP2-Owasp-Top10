@@ -163,7 +163,7 @@ def update(vraag_id):
         return render_template(
             "question_details.html" , vraag_id=vraag_id, vraag=vraag ,table_list=tables
         )
-        # haal vraag info op en toon vraag detail pagina
+        # get info question and show question detail page
     elif request.method == "POST":
         vraag = request.form['vraag']
         dbm.save_question(vraag, vraag_id)
@@ -188,11 +188,13 @@ def delete(id):
         dbm.remove_delete_questions(id)
         return redirect(f'/table_details/vragen')
 
+#route where user can select what he wants to analyze
 @app.route('/selection', methods = ["POST", "GET"])
 def selection():
     tables = dbm.get_table_list()    
     return render_template("selection.html",table_list=tables, table_name="",)
 
+#result of selection made by user 
 @app.route('/confirmed_selection', methods = ["POST"])
 def confirmed_selection():
     tables = dbm.get_table_list()
@@ -240,10 +242,9 @@ def logoRedirect():
     return render_template(
     "tables.html", table_list=tables, database_file=DATABASE_FILE)
 
+#changes column name 'met pensioen' if needed
 def update_name_MetPensioen():
     dbm.update_name_MetPensioen()
-
-update_name_MetPensioen()
 
 if __name__ == "__main__":
     app.run(host=FLASK_IP, port=FLASK_PORT, debug=FLASK_DEBUG)

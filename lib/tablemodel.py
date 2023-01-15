@@ -190,7 +190,8 @@ class DatabaseModel:
         if 'met pensioen' in table_headers:
             cursor_new_column.execute("ALTER TABLE 'auteurs' RENAME COLUMN 'met pensioen' to 'MetPensioen' ")
             cursor_new_column.fetchall()
-
+    
+    #gives as result a table selected by the user
     def user_input_selection(self, kolom, tabel, value1, value2):
         cursor = sqlite3.connect(self.database_file).cursor()
         
@@ -213,7 +214,8 @@ class DatabaseModel:
         table_content = cursor.fetchall()
 
         return table_content, table_headers
-
+    
+    #downloads selected table by user as csv
     def download_csv_selection(self, kolom, tabel, value1, value2):     
             cursor = sqlite3.connect(self.database_file, isolation_level=None,detect_types=sqlite3.PARSE_COLNAMES)
             
