@@ -199,20 +199,35 @@ def selection():
 def confirmed_selection():
     tables = dbm.get_table_list()
     selected_table = str(tables[int(request.form.get('first'))])
+    session['sel_table'] = str(tables[int(request.form.get('first'))])
     selected_column = str(request.form.get('second'))
+    session['sel_column'] = str(request.form.get('second'))
     value1 = str(request.form.get('value1'))
+    session['v1'] = str(request.form.get('value1'))
     value2 = str(request.form.get('value2'))
+    session['v2'] = str(request.form.get('value2'))
 
     rows, column_names = dbm.user_input_selection(selected_column, 
         selected_table, value1, value2)
-    dbm.download_csv_selection(selected_column, selected_table, value1, value2)
-    return render_template("confirmed_selection.html", rows=rows, 
-        columns=column_names, table_name="", table_list=tables, selected_column = selected_column, selected_table = selected_table, value1 = value1, value2 = value2)
-
-@app.route('/download_csv', methods = ["POST"])
-def download_csv():
-    pass
     
+    return render_template("confirmed_selection.html", rows=rows, 
+        columns=column_names, table_name="", table_list=tables)
+
+#route to download selection made by user as csv file
+@app.route('/download_csv', methods = ["POST", "GET"])
+def download_csv():
+    tables = dbm.get_table_list()
+    selected_table = session.get('sel_table')
+    selected_column = session.get('sel_column')
+    value1 = session.get('v1')
+    value2 = session.get('v2')
+    dbm.download_csv_selection(selected_column, selected_table, value1, value2)
+
+    rows, column_names = dbm.user_input_selection(selected_column, 
+        selected_table, value1, value2)
+
+    return render_template("confirmed_selection.html", rows=rows, 
+        columns=column_names, table_name="", table_list=tables)   
 
 # Login function with username session and redirect (Danny)
 @app.route('/login', methods=["POST", "GET"])

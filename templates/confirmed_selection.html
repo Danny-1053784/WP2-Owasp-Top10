@@ -14,7 +14,7 @@
 <body>
 
     {% include 'header.html' %}
-    <form action = "{{ url_for('download_csv') }}" method = "post">
+    <form action = "{{ url_for('download_csv') }}">
         <input type="submit" value="Download als csv">
     </form>
 
