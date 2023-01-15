@@ -1,5 +1,7 @@
 import os.path
 
+import csv
+
 import sys
 import sqlite3
 from flask import Flask, render_template, redirect , request, session ,url_for, abort, make_response
@@ -27,15 +29,6 @@ if not os.path.isfile(DATABASE_FILE):
     create_demo_database(DATABASE_FILE)
 dbm = DatabaseModel(DATABASE_FILE)
 dbu = UserDatabaseModel(USER_DATABASE_FILE)
-
-#changed column name 'met pensioen' to 'MetPensioen' because SQL has difficulties working with spaces in column names
-cursor_new_column = sqlite3.connect(DATABASE_FILE).cursor()
-cursor_new_column.execute("SELECT * FROM 'auteurs'")
-table_headers = [column_name[0] for column_name in cursor_new_column.description]
-if 'met pensioen' in table_headers:
-    cursor_new_column.execute("ALTER TABLE 'auteurs' RENAME COLUMN 'met pensioen' to 'MetPensioen' ")
-    cursor_new_column.fetchall()
-
 
 # Main route that shows a list of tables in the database
 # Note the "@app.route" decorator. This might be a new concept for you.
@@ -235,9 +228,18 @@ def confirmed_selection():
     return render_template("confirmed_selection.html", rows=rows, 
         columns=column_names, table_name="", table_list=tables)
 
-@app.route('/export/<int:identifier>', methods=['GET'])
-def export(load_file_id):
-    pass
+@app.route('/download_csv', methods=["GET"])
+def download_csv():
+    tables = dbm.get_table_list()
+    selected_table = str(tables[int(request.form.get('first'))])
+    selected_column = str(request.form.get('second'))
+    value1 = str(request.form.get('value1'))
+    value2 = str(request.form.get('value2'))
+
+    response = dbm.download_csv_selection(selected_table, selected_column, value1, value2)
+    response.headers['Content-Disposition'] = 'attachment; filename=report.csv'
+    response.headers["Content-type"] = "text/csv"
+    return response
 
 # Login function with username session and redirect (Danny)
 @app.route('/login', methods=["POST", "GET"])
@@ -267,6 +269,8 @@ def logoRedirect():
     return render_template(
     "tables.html", table_list=tables, database_file=DATABASE_FILE)
 
+def update_name_MetPensioen():
+    dbm.update_name_MetPensioen()
 
 if __name__ == "__main__":
     app.run(host=FLASK_IP, port=FLASK_PORT, debug=FLASK_DEBUG)

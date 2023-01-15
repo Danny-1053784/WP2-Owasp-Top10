@@ -1,6 +1,10 @@
 import os
 import sqlite3
-from flask import Flask, session 
+
+import csv
+from io import StringIO
+
+from flask import Flask, session, make_response 
 
 class DatabaseModel:
     """This class is a wrapper around the sqlite3 database. It provides a simple interface that maps methods
@@ -213,6 +217,15 @@ class DatabaseModel:
 
         return table_content
 
+    def update_name_MetPensioen(self):
+    #changed column name 'met pensioen' to 'MetPensioen' because SQL has difficulties working with spaces in column names
+        cursor_new_column = sqlite3.connect(self.database_file).cursor()
+        cursor_new_column.execute("SELECT * FROM 'auteurs'")
+        table_headers = [column_name[0] for column_name in cursor_new_column.description]
+        if 'met pensioen' in table_headers:
+            cursor_new_column.execute("ALTER TABLE 'auteurs' RENAME COLUMN 'met pensioen' to 'MetPensioen' ")
+            cursor_new_column.fetchall()
+
     def nicky_get_table_content(self, table_name):
         cursor = sqlite3.connect(self.database_file).cursor()
         cursor.execute(f"SELECT * FROM {table_name} ")
@@ -257,5 +270,35 @@ class DatabaseModel:
         table_content = cursor.fetchall()
 
         return table_content, table_headers
+
+def download_csv_selection(self, kolom, tabel, value1, value2):
+        
+        si = StringIO()
+        cw = csv.writer(si)
+
+        
+        cursor = sqlite3.connect(self.database_file).cursor()
+        
+        if kolom in ['voornaam', 'achternaam']:
+                value1 = value1.title()
+                value2 = value2.title()
+
+        if tabel == 'vragen':
+            if kolom == 'leerdoel':
+                kolom = 'pb.leerdoel'
+            if kolom == 'id':
+                kolom = 'pt.id'
+            
+            cursor.execute(f"SELECT pt.id,pt.vraag,pb.leerdoel,pm.voornaam,pm.achternaam FROM `vragen`as pt LEFT JOIN `leerdoelen` as pb ON pt.leerdoel = pb.id LEFT JOIN `auteurs` as pm ON pt.auteur = pm.id WHERE {kolom} BETWEEN '{value1}' and '{value2}' ORDER BY {kolom}")
+
+        else:    
+            cursor.execute(f"SELECT * FROM {tabel} WHERE {kolom} BETWEEN '{value1}' and '{value2}' ORDER BY {kolom}")
+
+        
+        rows = cursor.fetchall()
+        cw.writerow([column_name[0] for column_name in cursor.description])
+        cw.writerows(rows)
+        response = make_response(si.getvalue())
+        return response
 
         
