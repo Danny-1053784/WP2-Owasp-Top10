@@ -33,6 +33,7 @@ class DatabaseModel:
         # Note that this method returns 2 variables!
         return table_content, table_headers
 
+    #If table is vragen show a different function that displays the id's for "leerdoel" and "auteur" as text (Danny)
     def get_table_content_vragen(self ):
         cursor = sqlite3.connect(self.database_file).cursor()
         cursor.execute("SELECT pt.id,pt.vraag,pb.leerdoel,pm.voornaam,pm.achternaam FROM `vragen`as pt LEFT JOIN `leerdoelen` as pb ON pt.leerdoel = pb.id LEFT JOIN `auteurs` as pm ON pt.auteur = pm.id")
@@ -42,7 +43,8 @@ class DatabaseModel:
 
         # Note that this method returns 2 variables!
         return table_content, table_headers
-
+    
+    #Display all "vragen" where "leerdoel" or "auteur" is "Null"
     def show_errors(self):
         cursor = sqlite3.connect(self.database_file).cursor()
         cursor.execute("SELECT * FROM vragen WHERE leerdoel IS NULL OR vraag IS NULL OR auteur IS NULL")
@@ -52,22 +54,6 @@ class DatabaseModel:
 
         # Note that this method returns 2 variables!
         return table_content, table_headers
-        
-
-    def update_null_value_objective(self, vragen, id):
-        conn = sqlite3.connect(self.database_file)
-        cursor = conn.cursor()
-        cursor.execute(f"UPDATE leerdoel SET vragen = '{vragen}' WHERE id = {id}")
-        conn.commit()
-        return True
-
-    def update_null_value_author(self, author, id):
-        conn = sqlite3.connect(self.database_file)
-        cursor = conn.cursor()
-        cursor.execute(f"UPDATE author SET vragen = '{author}' WHERE id = {id}")
-        conn.commit()
-        return True
-
 
     def get_bad_questions(self):
         cursor = sqlite3.connect(self.database_file).cursor()
@@ -86,14 +72,11 @@ class DatabaseModel:
         conn.commit()
         return True
 
-
     def read_question(self, id):
         cursor = sqlite3.connect(self.database_file).cursor()
         cursor.execute("SELECT vraag FROM vragen WHERE id="+id)
-       
         
         table_content = cursor.fetchone()[0]
-
        
         return table_content
 
@@ -104,7 +87,6 @@ class DatabaseModel:
         conn.commit()
         return True
 
-   
     def get_invalid_objective(self):
             cursor = sqlite3.connect(self.database_file).cursor()
             cursor.execute("SELECT * FROM vragen WHERE leerdoel NOT IN (SELECT id FROM leerdoelen)")
@@ -118,43 +100,32 @@ class DatabaseModel:
     def get_invalid_objective_update(self, id):
             cursor = sqlite3.connect(self.database_file).cursor()
             cursor.execute("SELECT leerdoel FROM leerdoelen WHERE id="+id)
-        
             
             table_content = cursor.fetchone()[0]
 
-        
             return table_content     
 
     def read_invalid_objective(self, id):
             cursor = sqlite3.connect(self.database_file).cursor()
             cursor.execute("SELECT leerdoel FROM vragen WHERE id="+id)
-        
             
             table_content = cursor.fetchone()[0]
-
         
             return table_content
-
 
     def read_objective_id(self):
                 cursor = sqlite3.connect(self.database_file).cursor()
                 cursor.execute("SELECT id FROM leerdoelen WHERE leerdoel = ?", (session.get('leerdoel_id'),))
             
-                
                 table_content = cursor.fetchone()[0]
-
             
                 return table_content
-
-
 
     def read_objective_overview_id(self):
                 cursor = sqlite3.connect(self.database_file).cursor()
                 cursor.execute("SELECT id FROM leerdoelen WHERE leerdoel = ?", (session.get('leerdoel_overview_id'),))
-            
                 
                 table_content = cursor.fetchone()[0]
-
             
                 return table_content
 
@@ -162,9 +133,7 @@ class DatabaseModel:
                 cursor = sqlite3.connect(self.database_file).cursor()
                 cursor.execute("SELECT id FROM auteurs WHERE achternaam = ?", (session.get('auteur_overview_id'),))
             
-                
                 table_content = cursor.fetchone()[0]
-
             
                 return table_content
 
@@ -172,7 +141,6 @@ class DatabaseModel:
             cursor = sqlite3.connect(self.database_file).cursor()
             cursor.execute("SELECT id from leerdoelen group by id")
 
-           
             table_content =[ table_content[0] for table_content in cursor.fetchall()]
             # Note that this method returns 2 variables!
             return table_content
@@ -180,7 +148,6 @@ class DatabaseModel:
     def read_invalid_objective_name_update(self):
             cursor = sqlite3.connect(self.database_file).cursor()
             cursor.execute("SELECT leerdoel,id from leerdoelen group by leerdoel")
-
            
             table_content =[ table_content[0] for table_content in cursor.fetchall()]
             # Note that this method returns 2 variables!
@@ -190,7 +157,6 @@ class DatabaseModel:
             cursor = sqlite3.connect(self.database_file).cursor()
             cursor.execute("SELECT achternaam,id from auteurs")
 
-           
             table_content =[ table_content[0] for table_content in cursor.fetchall()]
             # Note that this method returns 2 variables!
             return table_content            
