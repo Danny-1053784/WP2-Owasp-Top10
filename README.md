@@ -29,4 +29,4 @@ python app.py
 - https://getbootstrap.com/docs/5.2/examples/
 
 #CSV 
-- Na het downloaden van de CSV file kunt u deze terug vinden tussen de documenten in uw verkenner
+- Na het downloaden van de CSV file kunt u deze terug vinden tussen de documenten van deze folder
