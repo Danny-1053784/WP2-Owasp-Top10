@@ -1,10 +1,9 @@
 import os
 import sqlite3
-
-import csv
+import pandas as pd
 from io import StringIO
 
-from flask import Flask, session, make_response 
+from flask import Flask, session
 
 class DatabaseModel:
     """This class is a wrapper around the sqlite3 database. It provides a simple interface that maps methods
@@ -215,13 +214,8 @@ class DatabaseModel:
 
         return table_content, table_headers
 
-    def download_csv_selection(self, kolom, tabel, value1, value2):
-        
-            si = StringIO()
-            cw = csv.writer(si)
-
-            
-            cursor = sqlite3.connect(self.database_file).cursor()
+    def download_csv_selection(self, kolom, tabel, value1, value2):     
+            cursor = sqlite3.connect(self.database_file, isolation_level=None,detect_types=sqlite3.PARSE_COLNAMES)
             
             if kolom in ['voornaam', 'achternaam']:
                     value1 = value1.title()
@@ -233,16 +227,12 @@ class DatabaseModel:
                 if kolom == 'id':
                     kolom = 'pt.id'
                 
-                cursor.execute(f"SELECT pt.id,pt.vraag,pb.leerdoel,pm.voornaam,pm.achternaam FROM `vragen`as pt LEFT JOIN `leerdoelen` as pb ON pt.leerdoel = pb.id LEFT JOIN `auteurs` as pm ON pt.auteur = pm.id WHERE {kolom} BETWEEN '{value1}' and '{value2}' ORDER BY {kolom}")
+                db_df = pd.read_sql_query(f"SELECT pt.id,pt.vraag,pb.leerdoel,pm.voornaam,pm.achternaam FROM `vragen`as pt LEFT JOIN `leerdoelen` as pb ON pt.leerdoel = pb.id LEFT JOIN `auteurs` as pm ON pt.auteur = pm.id WHERE {kolom} BETWEEN '{value1}' and '{value2}' ORDER BY {kolom}", cursor)
 
             else:    
-                cursor.execute(f"SELECT * FROM {tabel} WHERE {kolom} BETWEEN '{value1}' and '{value2}' ORDER BY {kolom}")
+                db_df = pd.read_sql_query(f"SELECT * FROM {tabel} WHERE {kolom} BETWEEN '{value1}' and '{value2}' ORDER BY {kolom}", cursor)
 
+            db_df.to_csv('selectie.csv', index=False)
             
-            rows = cursor.fetchall()
-            cw.writerow([column_name[0] for column_name in cursor.description])
-            cw.writerows(rows)
-            response = make_response(si.getvalue())
-            return response
 
         

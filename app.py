@@ -1,7 +1,5 @@
 import os.path
 
-import csv
-
 import sys
 from flask import Flask, render_template, redirect , request, session ,url_for, abort, make_response
 from io import StringIO
@@ -205,21 +203,14 @@ def confirmed_selection():
 
     rows, column_names = dbm.user_input_selection(selected_column, 
         selected_table, value1, value2)
+    dbm.download_csv_selection(selected_column, selected_table, value1, value2)
     return render_template("confirmed_selection.html", rows=rows, 
-        columns=column_names, table_name="", table_list=tables)
+        columns=column_names, table_name="", table_list=tables, selected_column = selected_column, selected_table = selected_table, value1 = value1, value2 = value2)
 
-@app.route('/download_csv', methods=["GET"])
+@app.route('/download_csv', methods = ["POST"])
 def download_csv():
-    tables = dbm.get_table_list()
-    selected_table = str(tables[int(request.form.get('first'))])
-    selected_column = str(request.form.get('second'))
-    value1 = str(request.form.get('value1'))
-    value2 = str(request.form.get('value2'))
-
-    response = dbm.download_csv_selection(selected_table, selected_column, value1, value2)
-    response.headers['Content-Disposition'] = 'attachment; filename=report.csv'
-    response.headers["Content-type"] = "text/csv"
-    return response
+    pass
+    
 
 # Login function with username session and redirect (Danny)
 @app.route('/login', methods=["POST", "GET"])
