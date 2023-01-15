@@ -27,3 +27,6 @@ python app.py
 # Bronnen
 - https://getbootstrap.com/
 - https://getbootstrap.com/docs/5.2/examples/
+
+#CSV 
+- Na het downloaden van de CSV file kunt u deze terug vinden tussen de documenten in uw verkenner
