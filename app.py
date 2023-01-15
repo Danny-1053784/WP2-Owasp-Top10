@@ -197,23 +197,8 @@ def delete(id):
 
 @app.route('/selection', methods = ["POST", "GET"])
 def selection():
-    #rows, column_names = dbm.show_errors()
-    tables = dbm.get_table_list()
-    
-    # code om ervoor te zorgen dat in JavaScript een lijst wordt meegegeven van tabel- en kolomnamen
-    # werkt momenteel niet
-    # in 'selection.html' zie je momenteel dat de namen handmatig zijn ingevoerd 
-    tblklmdict = {}
-    for table in tables:
-        if table == "vragen":
-            tc1 = dbm.nicky_get_table_content_vragen()
-            tblklmdict[table] = tc1
-        else:
-            tc1 = dbm.nicky_get_table_content(table)
-            tblklmdict[table] = tc1
-    abc = next(iter(tblklmdict))
-    
-    return render_template("selection.html",table_list=tables, table_name="", tblklmdict = tblklmdict, abc = abc)
+    tables = dbm.get_table_list()    
+    return render_template("selection.html",table_list=tables, table_name="",)
 
 @app.route('/confirmed_selection', methods = ["POST"])
 def confirmed_selection():
