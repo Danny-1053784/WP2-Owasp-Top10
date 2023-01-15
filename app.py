@@ -169,6 +169,7 @@ def update(vraag_id):
         dbm.save_question(vraag, vraag_id)
         return redirect(f'/table_details/vragen')
 
+#redirect Delete question (Bryan)
 @app.route("/delete_question")
 def delete_question(id):
     rows, column_names = dbm.remove_delete_questions(id)
@@ -176,6 +177,7 @@ def delete_question(id):
     return render_template(
         "delete_question.html", rows=rows, columns=column_names,table_list=tables, table_name="")
 
+#Delete question based on ID (Bryan)
 @app.route("/delete/<id>", methods=['GET', 'POST'])
 def delete(id):
     if request.method == 'GET':
