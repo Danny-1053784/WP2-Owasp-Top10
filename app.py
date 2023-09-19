@@ -38,13 +38,6 @@ dbu = UserDatabaseModel(USER_DATABASE_FILE)
 def index():
     return render_template("index.html")
 
-@app.route("/")
-def getListTables():
-    tables = dbm.get_table_list()
-    return render_template(
-        "tables.html", table_list=tables, database_file=DATABASE_FILE
-    )
-
 #redirect to tables page (Danny)
 @app.route("/")
 def showTables():
