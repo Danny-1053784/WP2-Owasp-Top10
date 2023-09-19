@@ -16,10 +16,13 @@ class DatabaseModel:
 
     # Using the built-in sqlite3 system table, return a list of all tables in the database
     def get_table_list(self):
-        cursor = sqlite3.connect(self.database_file).cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
-        tables = [table[0] for table in cursor.fetchall()]
-        return tables
+        try:
+            cursor = sqlite3.connect(self.database_file).cursor()
+            cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+            tables = [table[0] for table in cursor.fetchall()]
+            return tables
+        except Exception as e:
+            raise Exception(f"An error occurred while retrieving table list: {str(e)}")
 
     # Given a table name, return the rows and column names
     def get_table_content(self, table_name):

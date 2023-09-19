@@ -20,8 +20,8 @@ Om de demo applicatie te starten:
 python app.py
 ```
 # Login
-- Gebruikersnaam: admin 
-- Wachtwoord: admin
+- Gebruikersnaam: TimAdmin 
+- Wachtwoord: TimmyTimTim420
 
 # Bronnen
 - https://getbootstrap.com/
