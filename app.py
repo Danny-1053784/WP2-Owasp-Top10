@@ -3,6 +3,7 @@ import os.path
 import sys
 from flask import Flask, render_template, redirect , request, session ,url_for, abort, make_response
 from io import StringIO
+from flask_wtf import CSRFProtect
 
 from lib.tablemodel import DatabaseModel
 from lib.loginmodel import UserDatabaseModel
@@ -17,6 +18,7 @@ FLASK_DEBUG = True
 
 app = Flask(__name__)
 app.secret_key = "ImNotABigFanOfFlask69"
+csrf = CSRFProtect(app)
 # This command creates the "<application directory>/databases/testcorrect_vragen.db" path
 DATABASE_FILE = os.path.join(app.root_path, 'databases', 'testcorrect_vragen.db')
 USER_DATABASE_FILE = os.path.join(app.root_path, 'databases', 'user_details.db')
