@@ -16,8 +16,11 @@ FLASK_IP = LISTEN_ALL
 FLASK_PORT = 81
 FLASK_DEBUG = True
 
+import os
+keycode = os.urandom(12).hex()
+
 app = Flask(__name__)
-app.secret_key = "ImNotABigFanOfFlask69"
+app.secret_key = keycode
 csrf = CSRFProtect(app)
 # This command creates the "<application directory>/databases/testcorrect_vragen.db" path
 DATABASE_FILE = os.path.join(app.root_path, 'databases', 'testcorrect_vragen.db')
